@@ -1,32 +1,5 @@
 # important packages for laptop settings
 
-## Drivers
-
-- xorg
-- intel-media-driver
-- vulkan-intel
-- intel-gmmlib
-
-## i3lock when screen is closed
-
-- xss-lock
-- betterlockscreen
-
-For betterlockscreen to work with laptop lid
-
-```
-$ sudo systemctl enable betterlockscreen@<user_name>.service
-$ sudo nvim /etc/systemd/logind.conf
-// uncomment `HandleLidSwitch=suspend`
-```
-
-## Bluetooth
-
-- blueman
-- bluez
-- bluez-utils
-- gnome-bluetooth
-
 ## Brightnessctl
 
 - brightnessctl
@@ -37,21 +10,6 @@ the following file must be created to access brightness control in polybar:
 sudo nvim /etc/udev/rules.d/backlight.rules
 ACTION=="add", SUBSYSTEM=="backlight", RUN+="/bin/chgrp video $sys$devpath/brightness", RUN+="/bin/chmod g+w $sys$devpath/brightness"
 sudo usermod -aG video $USER
-```
-
-## Misc
-
-- lshw
-- auto-cpufreq # for optimizing cpu according to usage. The config file must be located in /etc/auto-cpufreq.conf
-
----
-
-## Important commands
-
-to check bluetooth status:
-
-```
-bluetoothctl info
 ```
 
 ## Enable touchpad gestures
@@ -116,6 +74,7 @@ $ sudo mkinitcpio -p linux
 ### files for browsers
 
 - brave-flags.conf
+- brave-origin-flags.conf
 - chrome-flags.conf
 - chromium-flags.conf
 
@@ -143,16 +102,30 @@ $ sudo mkinitcpio -p linux
 
 ## xfce minimal install:
 
-1. xfce4-session
+```sh
+xorg_packages=(
+xfce4-session
+xfce4-panel
+xfwm4
+xfce4-settings
+xfce4-pulseaudio-plugin
+xfce4-cpufreq-plugin
+xcec4-sensors-plugin
+xorg
+xorg-server
+lxappearance
+xsel
+xorg-xrandr
+xdotool
+feh
+)
 
-2. xfce4-panel
-
-3. xfwm4
-
-4. xfce4-settings
-
-5. xfce4-pulseaudio-plugin
-
-6. xfce4-cpufreq-plugin
-
-7. xcec4-sensors-plugin
+for package in "$xorg_packages"; do
+  if pacman -Qq "$package" &>/dev/null; then
+    echo "$package already installed."
+  else
+    echo "Installing $package..."
+    sudo pacman -S --noconfirm "$package"
+  fi
+done
+```

@@ -32,6 +32,9 @@ $ mount /dev/mapper/crypthome /mnt/home
 # install the system
 $ pacstrap /mnt linux linux-lts linux-zen linux-headers linux-firmware base base-devel efibootmgr cryptsetup networkmanager neovim mtools dosfstools intel-ucode intel-media-driver vulkan-intel intel-gmmlib sof-firmware
 
+# amd
+$ pacstrap /mnt linux linux-lts linux-zen linux-headers linux-firmware base base-devel efibootmgr cryptsetup networkmanager neovim mtools dosfstools xf86-video-amdgpu xf86-video-ati amd-ucode amdvlk sof-firmware
+
 ##########################################
 # generate fstab
 $ genfstab -U /mnt >> /mnt/etc/fstab
